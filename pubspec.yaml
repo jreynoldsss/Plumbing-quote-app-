@@ -1,12 +1,21 @@
-name: plumbing_quote_app
-description: A plumbing quote app with scope-based clause auto-fill functionality.
+name: plumbing_quote
+description: A simple plumbing quote generator app.
+publish_to: 'none'
 
-publish_to: 'none' # Remove this line if you plan to publish to pub.dev.
+# Set a lower-bound constraint for Flutter SDK
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
