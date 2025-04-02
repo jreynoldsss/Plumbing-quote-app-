@@ -8,15 +8,15 @@ workflows:
       groups:
         - keystore_credential
     scripts:
+      - name: Clean Flutter Cache
+        script: |
+         flutter clean
+         flutter pub get
       - name: Set up Keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
       - name: Build APK
         script: |
           flutter build apk --release --split-per-abi
-      - name: Clean Flutter Cache
-        script: |
-         flutter clean
-         flutter pub get
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
