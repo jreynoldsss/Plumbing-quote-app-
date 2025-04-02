@@ -6,7 +6,7 @@ workflows:
     environment:
       flutter: stable
       groups:
-        - keystore_credentials
+        - keystore_credential
     scripts:
       - name: Set up Keystore
         script: |
@@ -14,5 +14,9 @@ workflows:
       - name: Build APK
         script: |
           flutter build apk --release --split-per-abi
+      - name: Clean Flutter Cache
+        script: |
+         flutter clean
+         flutter pub get
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
