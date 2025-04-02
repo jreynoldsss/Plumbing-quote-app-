@@ -2,7 +2,6 @@ name: plumbing_quote
 description: A simple plumbing quote generator app.
 publish_to: 'none'
 
-# Set a lower-bound constraint for Flutter SDK
 environment:
   sdk: '>=3.0.0 <4.0.0'
   flutter: '>=3.10.0'
