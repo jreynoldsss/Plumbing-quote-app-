@@ -10,7 +10,7 @@ workflows:
     scripts:
       - name: Ensure Flutter V2 Embedding
         script: |
-          # Find and replace all occurrences of V1 embedding with V2 embedding in Android source files
+          # Ensure V2 embedding is used by replacing references to io.flutter.app.FlutterActivity
           find android app lib -type f -name "*.kt" -o -name "*.xml" -o -name "*.gradle" -print0 | while IFS= read -r -d '' file; do
             awk '{gsub("io.flutter.app.FlutterActivity","io.flutter.embedding.android.FlutterActivity")}1' "$file" > temp_file && mv temp_file "$file"
           done
@@ -23,6 +23,7 @@ workflows:
 
       - name: Build APK
         script: |
+          # Build APK after ensuring V2 embedding
           flutter build apk --release --no-shrink --split-per-abi
 
     artifacts:
