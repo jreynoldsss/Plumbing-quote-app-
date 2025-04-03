@@ -1,30 +1,34 @@
 workflows:
   android-workflow:
     name: Android Build
-    max_build_duration: 30
-    instance_type: mac_mini_m1  # Use this for building APK on macOS
+    instance_type: mac_mini_m1
+    max_build_duration: 60
     environment:
       flutter: stable
-      groups:
-        - keystore_credential
+      vars:
+        PACKAGE_NAME: "com.example.plumbing_quote"
     scripts:
-      - name: Clean Flutter Cache
-        script: |
-         flutter clean
-         flutter pub get
-      - name: Set up Keystore
-        script: |
-          echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
       - name: Ensure Flutter V2 Embedding
         script: |
           # Find and replace all occurrences of V1 embedding with V2 embedding
-          find . -type f -exec sed -i 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g' {} +      - name: Clean and Upgrade
+          find . -type f -exec sed -i 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g' {} +
+
+      - name: Clean and Upgrade Dependencies
         script: |
-         flutter clean
-         flutter pub upgrade --major-versions
-         flutter pub get
-      - name: Build APK (Flutter V2)
+          flutter clean
+          flutter pub upgrade --major-versions
+          flutter pub get
+
+      - name: Build APK
         script: |
-         flutter build apk --release --no-shrink --split-per-abi
+          flutter build apk --release --no-shrink --split-per-abi
+
     artifacts:
-      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+      - build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+      - build/app/outputs/flutter-apk/app-x86_64-release.apk
+
+    publishing:
+      email:
+        recipients:
+          - jaydenrules.jr@gmail.com
