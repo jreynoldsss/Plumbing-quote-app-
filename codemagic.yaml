@@ -24,8 +24,8 @@ workflows:
           flutter clean
           flutter pub upgrade --major-versions
           flutter pub get
-  - name: Build APK (Flutter V2)
-    script: |
-      flutter build apk --release --no-shrink --split-per-abi
+      - name: Build APK (Flutter V2)
+        script: |
+           flutter build apk --release --no-shrink --split-per-abi
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
