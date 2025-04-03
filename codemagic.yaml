@@ -15,7 +15,6 @@ workflows:
       - name: Set up Keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
-          scripts:
       - name: Ensure Flutter V2 Embedding
         script: |
          grep -rl 'io.flutter.app.FlutterActivity' . | xargs sed -i 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g'
