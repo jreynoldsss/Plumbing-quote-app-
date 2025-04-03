@@ -10,8 +10,10 @@ workflows:
     scripts:
       - name: Ensure Flutter V2 Embedding
         script: |
-          # Find and replace all occurrences of V1 embedding with V2 embedding
-          find . -type f -exec sed -i 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g' {} +
+          # Find and replace all occurrences of V1 embedding with V2 embedding in Android source files
+          find android app lib -type f -name "*.kt" -o -name "*.xml" -o -name "*.gradle" -print0 | while IFS= read -r -d '' file; do
+            awk '{gsub("io.flutter.app.FlutterActivity","io.flutter.embedding.android.FlutterActivity")}1' "$file" > temp_file && mv temp_file "$file"
+          done
 
       - name: Clean and Upgrade Dependencies
         script: |
@@ -22,13 +24,6 @@ workflows:
       - name: Build APK
         script: |
           flutter build apk --release --no-shrink --split-per-abi
-
-      - name: Ensure Flutter V2 Embedding
-        script: |
-          # Only modify Android-related files (avoid pubspec.yaml)
-          find android app lib -type f -name "*.kt" -o -name "*.xml" -o -name "*.gradle" | while read file; do
-            sed -i'' -e 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g' "$file"
-          done
 
     artifacts:
       - build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
