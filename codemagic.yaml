@@ -15,8 +15,17 @@ workflows:
       - name: Set up Keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
-      - name: Build APK
+          scripts:
+      - name: Ensure Flutter V2 Embedding
         script: |
-          flutter build apk --release --split-per-abi
+         grep -rl 'io.flutter.app.FlutterActivity' . | xargs sed -i 's/io.flutter.app.FlutterActivity/io.flutter.embedding.android.FlutterActivity/g'
+      - name: Clean and Upgrade
+        script: |
+          flutter clean
+          flutter pub upgrade --major-versions
+          flutter pub get
+  - name: Build APK (Flutter V2)
+    script: |
+      flutter build apk --release --no-shrink --split-per-abi
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
