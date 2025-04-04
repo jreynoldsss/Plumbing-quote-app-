@@ -3,7 +3,7 @@ workflows:
     name: Android Build
     instance_type: mac_mini_m1
     environment:
-      flutter: stable
+      flutter: "3.19.5"
     scripts:
       - name: Clean and get packages
         script: |
