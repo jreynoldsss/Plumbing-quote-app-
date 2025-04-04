@@ -2,36 +2,15 @@ workflows:
   android-workflow:
     name: Android Build
     instance_type: mac_mini_m1
-    max_build_duration: 60
     environment:
       flutter: stable
-      vars:
-        PACKAGE_NAME: "com.example.plumbing_quote"
     scripts:
-      - name: Ensure Flutter V2 Embedding
-        script: |
-          # Ensure V2 embedding is used by replacing references to io.flutter.app.FlutterActivity
-          find android app lib -type f -name "*.kt" -o -name "*.xml" -o -name "*.gradle" -print0 | while IFS= read -r -d '' file; do
-            awk '{gsub("io.flutter.app.FlutterActivity","io.flutter.embedding.android.FlutterActivity")}1' "$file" > temp_file && mv temp_file "$file"
-          done
-
-      - name: Clean and Upgrade Dependencies
+      - name: Clean and get packages
         script: |
           flutter clean
-          flutter pub upgrade --major-versions
           flutter pub get
-
       - name: Build APK
         script: |
-          # Build APK after ensuring V2 embedding
           flutter build apk --release --no-shrink --split-per-abi
-
     artifacts:
-      - build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-      - build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-      - build/app/outputs/flutter-apk/app-x86_64-release.apk
-
-    publishing:
-      email:
-        recipients:
-          - jaydenrules.jr@gmail.com
+      - build/app/outputs/flutter-apk/*.apk
