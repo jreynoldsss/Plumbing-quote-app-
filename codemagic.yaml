@@ -5,9 +5,14 @@ workflows:
     environment:
       flutter: "3.19.5"
     scripts:
-      - name: Clean and get packages
+      - name: Clean up old embedding and artifacts
         script: |
-          flutter clean
+          echo "Deleting old artifacts..."
+          rm -rf .android .dart_tool build
+          echo "Checking for V1 embedding..."
+          grep -r 'io.flutter.app.FlutterActivity' . || echo "No V1 embedding found."
+      - name: Get dependencies
+        script: |
           flutter pub get
       - name: Build APK
         script: |
