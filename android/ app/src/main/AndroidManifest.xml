@@ -5,8 +5,8 @@
     android:theme="@style/LaunchTheme"
     android:usesCleartextTraffic="true">
     <meta-data
-        android:name="flutterEmbedding"
-        android:value="2" /> <!-- This ensures V2 embedding -->
+    android:name="flutterEmbedding"
+    android:value="2" />>
     <activity
         android:name="io.flutter.embedding.android.FlutterActivity"
         android:launchMode="singleTop"
